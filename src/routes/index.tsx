@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { OrcaCursor } from "@/components/OrcaCursor";
 import { Extra } from "@/components/Extra";
-import { Gallery, grid } from "@/components/GalleryWall";
+import { Gallery, HelixGallery, grid, helix } from "@/components/GalleryWall";
 import hero from "@/assets/orca-hero.jpg";
 import breach from "@/assets/orca-breach.jpg";
 import studio from "@/assets/work/img_p3_1.jpg";
@@ -266,12 +266,14 @@ function Index() {
           </div>
 
           <Reveal className="mt-40"><h2 className="font-display text-5xl font-bold md:text-7xl">Hall II — <span className="text-stroke">Shorts</span></h2></Reveal>
-          <div className="mt-16 grid grid-cols-3 gap-4 md:gap-10">
-            {[s1, s2, s3].map((src, i) => (
-              <Reveal key={i} delay={i * 120} className={i === 1 ? "mt-16" : ""}>
-                <Frame src={src} label={`Reel 0${i + 1}`} ratio="aspect-[9/16]" />
-              </Reveal>
-            ))}
+          <p className="mt-4 text-sm text-muted-foreground">A spiral of reels — scroll to wind the helix.</p>
+          <div className="relative mt-10 h-[80vh] overflow-hidden rounded-3xl border border-border/50 bg-deep/40">
+            <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-b from-background via-transparent to-background" />
+            <HelixGallery arrange={helix({ radius: 500, itemsPerTurn: 12, pitch: 48 })} className="h-full w-full">
+              {[s1, s2, s3, s1, s2, s3, s1, s2, s3, s1, s2, s3].map((src, i) => (
+                <img key={i} src={src} alt={`Reel ${(i % 3) + 1}`} loading="lazy" className="aspect-[9/16] w-full rounded-xl border border-border object-cover shadow-glow" />
+              ))}
+            </HelixGallery>
           </div>
         </div>
 
