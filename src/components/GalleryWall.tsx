@@ -22,6 +22,101 @@ export function grid({
   return { kind: "grid", columns, fill, rotateX, bulge, gap };
 }
 
+export type HelixArrange = {
+  kind: "helix";
+  radius: number;
+  itemsPerTurn: number;
+  pitch: number;
+};
+
+export function helix({
+  radius = 500,
+  itemsPerTurn = 12,
+  pitch = 48,
+}: Partial<HelixArrange> = {}): HelixArrange {
+  return { kind: "helix", radius, itemsPerTurn, pitch };
+}
+
+/* 3D spiral gallery: plates wind around a vertical cylinder.
+   Scrolling rotates the helix and the spiral climbs; a slow idle
+   drift keeps it alive when the page is still. */
+export function HelixGallery({
+  arrange,
+  children,
+  className = "",
+}: {
+  arrange: HelixArrange;
+  children: ReactNode;
+  className?: string;
+}) {
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const items = Array.isArray(children) ? children : [children];
+  const n = items.length;
+  const step = 360 / arrange.itemsPerTurn;
+  const total = n * arrange.pitch;
+
+  useEffect(() => {
+    const wrap = wrapRef.current;
+    if (!wrap) return;
+    const cells = Array.from(wrap.querySelectorAll<HTMLElement>("[data-helix]"));
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    let raf = 0;
+    let rot = 0;
+    let last = performance.now();
+
+    const tick = (now: number) => {
+      const dt = Math.min(64, now - last);
+      last = now;
+
+      // Scroll-driven spin: section progress maps to two full turns.
+      const r = wrap.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const progress = Math.min(1, Math.max(0, (vh - r.top) / (vh + r.height)));
+      const target = progress * 720;
+      rot += (target - rot) * 0.08;
+      const spin = reduce ? 0 : rot + now * 0.004; // idle drift
+
+      for (let i = 0; i < cells.length; i++) {
+        const el = cells[i];
+        if (!el) continue;
+        const angle = i * step + spin;
+        const rad = (angle * Math.PI) / 180;
+        // Spiral climbs as it turns; wrap vertically.
+        let y = (i * arrange.pitch - (spin / 360) * arrange.itemsPerTurn * arrange.pitch) % total;
+        if (y < -total / 2) y += total;
+        if (y > total / 2) y -= total;
+        const depth = (Math.cos(rad) + 1) / 2; // 1 = front, 0 = back
+        el.style.transform = `translate(-50%, -50%) translateY(${y.toFixed(1)}px) rotateY(${angle.toFixed(2)}deg) translateZ(${arrange.radius}px)`;
+        el.style.opacity = (0.15 + depth * 0.85).toFixed(3);
+        el.style.zIndex = String(Math.round(depth * 100));
+        el.style.filter = `brightness(${(0.5 + depth * 0.6).toFixed(2)})`;
+      }
+      raf = requestAnimationFrame(tick);
+    };
+
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [arrange.radius, arrange.itemsPerTurn, arrange.pitch, n, step, total]);
+
+  return (
+    <div ref={wrapRef} className={className} style={{ perspective: "2200px" }}>
+      <div className="relative h-full w-full" style={{ transformStyle: "preserve-3d" }}>
+        {items.map((child, i) => (
+          <div
+            key={i}
+            data-helix
+            className="absolute left-1/2 top-[42%] w-40 will-change-transform md:w-52"
+            style={{ transformStyle: "preserve-3d", backfaceVisibility: "hidden" }}
+          >
+            {child}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export function Gallery({
   arrange,
   children,
