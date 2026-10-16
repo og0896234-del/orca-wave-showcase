@@ -78,6 +78,8 @@ export function HelixGallery({
       const spin = reduce ? 0 : rot + now * 0.004; // idle drift
 
       for (let i = 0; i < cells.length; i++) {
+        const el = cells[i];
+        if (!el) continue;
         const angle = i * step + spin;
         const rad = (angle * Math.PI) / 180;
         // Spiral climbs as it turns; wrap vertically.
@@ -85,7 +87,6 @@ export function HelixGallery({
         if (y < -total / 2) y += total;
         if (y > total / 2) y -= total;
         const depth = (Math.cos(rad) + 1) / 2; // 1 = front, 0 = back
-        const el = cells[i];
         el.style.transform = `translate(-50%, -50%) translateY(${y.toFixed(1)}px) rotateY(${angle.toFixed(2)}deg) translateZ(${arrange.radius}px)`;
         el.style.opacity = (0.15 + depth * 0.85).toFixed(3);
         el.style.zIndex = String(Math.round(depth * 100));
