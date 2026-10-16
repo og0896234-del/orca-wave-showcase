@@ -205,7 +205,7 @@ function Index() {
       </div>
 
       {/* about */}
-      <section id="about" className="relative mx-auto max-w-7xl px-6 py-32 md:py-48">
+      <section id="about" className="relative mx-auto max-w-7xl px-6 py-24 md:py-36">
         <Chapter n="01" title="The Pod" />
         <div className="grid items-center gap-16 md:grid-cols-2">
           <Reveal>
@@ -267,7 +267,7 @@ function Index() {
 
           <Reveal className="mt-40"><h2 className="font-display text-5xl font-bold md:text-7xl">Hall II — <span className="text-stroke">Shorts</span></h2></Reveal>
           <p className="mt-4 text-sm text-muted-foreground">A spiral of reels — scroll to wind the helix.</p>
-          <div className="relative mt-10 h-[80vh] overflow-hidden rounded-3xl border border-border/50 bg-deep/40">
+          <div className="relative mt-10 h-[68vh] overflow-hidden rounded-3xl border border-border/50 bg-deep/40">
             <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-b from-background via-transparent to-background" />
             <HelixGallery arrange={helix({ radius: 500, itemsPerTurn: 12, pitch: 48 })} className="h-full w-full">
               {[s1, s2, s3, s1, s2, s3, s1, s2, s3, s1, s2, s3].map((src, i) => (
@@ -314,7 +314,7 @@ function Index() {
                     <Fin className="h-8 w-8 -translate-x-4 text-primary opacity-0 transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100" />
                     <h3 className="font-display text-4xl font-bold transition-colors group-hover:text-primary md:text-6xl">{w.name}</h3>
                   </div>
-                  <div className="md:text-right">
+                  <div className="md:pr-20 md:text-right">
                     <p className="text-lg">{w.line}</p>
                     <p className="mt-1 text-sm text-muted-foreground">{w.tags.join(" · ")}</p>
                   </div>
