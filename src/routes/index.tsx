@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { OrcaCursor } from "@/components/OrcaCursor";
 import { Extra } from "@/components/Extra";
+import { Gallery, grid } from "@/components/GalleryWall";
 import hero from "@/assets/orca-hero.jpg";
 import breach from "@/assets/orca-breach.jpg";
 import studio from "@/assets/work/img_p3_1.jpg";
@@ -286,6 +287,15 @@ function Index() {
             </div>
           </div>
         </div>
+
+        <Reveal className="mx-auto max-w-7xl px-6">
+          <Gallery arrange={grid({ columns: 6, fill: "offset", rotateX: 20, bulge: 120 })} className="pb-14 pt-2">
+            {[t1, t2, t3, t4, t5, t6, t1, t2, t3, t4, t5, t6].map((src, i) => (
+              <img key={i} src={src} alt={`Thumbnail plate ${i + 1}`} loading="lazy" className="aspect-video w-full rounded-xl border border-border object-cover" />
+            ))}
+          </Gallery>
+          <p className="text-center text-xs uppercase tracking-[0.4em] text-muted-foreground">Glide your cursor across the wall</p>
+        </Reveal>
       </section>
 
       {/* waters */}
