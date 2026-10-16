@@ -1,4 +1,7 @@
 import { useState, type FormEvent, type ReactNode } from "react";
+import poster1 from "@/assets/work/img_p8_1.png";
+import poster2 from "@/assets/work/img_p8_2.png";
+import poster3 from "@/assets/work/img_p8_3.png";
 
 function Fin({ className = "" }: { className?: string }) {
   return (
@@ -21,12 +24,12 @@ function Head({ n, title, h }: { n: string; title: string; h: ReactNode }) {
 
 // Placeholder videos — replace with OrcaVX YouTube IDs
 const videos = [
-  { id: "aqz-KE-bpKQ", title: "Long-form edit" },
-  { id: "eRsGyueVLvQ", title: "Story cut" },
-  { id: "R6MlUcmOul8", title: "Color & sound" },
+  { id: "aqz-KE-bpKQ", title: "Long-form edit", poster: poster1 },
+  { id: "eRsGyueVLvQ", title: "Story cut", poster: poster2 },
+  { id: "R6MlUcmOul8", title: "Color & sound", poster: poster3 },
 ];
 
-function YT({ id, title }: { id: string; title: string }) {
+function YT({ id, title, poster }: { id: string; title: string; poster: string }) {
   const [on, setOn] = useState(false);
   return (
     <div className="group relative aspect-video overflow-hidden rounded-2xl border border-border bg-card">
@@ -35,7 +38,7 @@ function YT({ id, title }: { id: string; title: string }) {
           allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
       ) : (
         <button onClick={() => setOn(true)} className="absolute inset-0" aria-label={`Play ${title}`}>
-          <img src={`https://i.ytimg.com/vi/${id}/hqdefault.jpg`} alt={title} loading="lazy" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
+          <img src={poster} alt={title} loading="lazy" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
           <span className="absolute inset-0 bg-gradient-to-t from-abyss/90 to-transparent" />
           <span className="absolute left-1/2 top-1/2 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-glow transition-transform duration-500 group-hover:scale-125">▶</span>
           <span className="absolute bottom-4 left-4 text-xs uppercase tracking-widest">{title}</span>
@@ -88,7 +91,7 @@ export function Extra() {
 
   return (
     <>
-      <section id="reels" className="relative bg-deep py-32 md:py-48">
+      <section id="reels" className="relative bg-deep py-24 md:py-36">
         <div className="mx-auto max-w-7xl px-6">
           <Head n="Interlude" title="Now Playing" h={<>Press <span className="text-gradient">play</span>.</>} />
           <div className="reveal mb-6">{videos.slice(0, 1).map((v) => <YT key={v.id} {...v} />)}</div>
@@ -98,7 +101,7 @@ export function Extra() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 py-32">
+      <section className="mx-auto max-w-7xl px-6 py-24 md:py-32">
         <Head n="Migration" title="How it works" h={<>The <span className="text-stroke">route</span>.</>} />
         <div className="grid gap-6 md:grid-cols-4">
           {steps.map(([t, d], i) => (
@@ -111,8 +114,8 @@ export function Extra() {
         </div>
       </section>
 
-      <section id="compare" className="relative bg-deep py-32 md:py-48">
-        <div className="mx-auto max-w-7xl px-6">
+      <section id="compare" className="relative bg-deep py-24 md:py-36">
+        <div className="mx-auto max-w-7xl px-6 md:pr-20">
           <Head n="Side by side" title="Compare plans" h={<>Size up the <span className="text-gradient">pod</span>.</>} />
           <div className="reveal overflow-x-auto rounded-3xl border border-border">
             <table className="w-full min-w-[640px] text-left text-sm">
@@ -137,7 +140,7 @@ export function Extra() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-4xl px-6 py-32">
+      <section className="mx-auto max-w-4xl px-6 py-24 md:py-32">
         <Head n="Sonar" title="Questions" h={<>Echoes<span className="text-primary">.</span></>} />
         <div className="divide-y divide-border border-y border-border">
           {faqs.map(([q, a], i) => (
@@ -153,9 +156,9 @@ export function Extra() {
         </div>
       </section>
 
-      <section id="brief" className="relative bg-deep py-32 md:py-48">
+      <section id="brief" className="relative bg-deep py-24 md:py-36">
         <div className="absolute inset-0 bg-glow opacity-40" />
-        <div className="relative mx-auto grid max-w-7xl gap-16 px-6 md:grid-cols-2">
+        <div className="relative mx-auto grid max-w-7xl gap-16 px-6 md:grid-cols-2 md:pr-20">
           <Head n="Signal" title="Start a project" h={<>Send a <span className="text-stroke">brief</span>.</>} />
           <form onSubmit={submit} className="reveal space-y-4">
             <div className="grid gap-4 sm:grid-cols-2">
