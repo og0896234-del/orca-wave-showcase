@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useState, type FormEvent, type ReactNode } from "react";
 
 function Fin({ className = "" }: { className?: string }) {
   return (
@@ -8,7 +8,7 @@ function Fin({ className = "" }: { className?: string }) {
   );
 }
 
-function Head({ n, title, h }: { n: string; title: string; h: React.ReactNode }) {
+function Head({ n, title, h }: { n: string; title: string; h: ReactNode }) {
   return (
     <div className="reveal mb-16">
       <div className="mb-8 flex items-center gap-4 text-xs uppercase tracking-[0.4em] text-muted-foreground">
