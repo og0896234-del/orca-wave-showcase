@@ -61,7 +61,7 @@ export function Gallery({
           el,
           x: r.left - wr.left + r.width / 2,
           y: r.top - wr.top + r.height / 2,
-          base: el.dataset.base ?? "",
+          base: el.dataset["base"] ?? "",
         };
       });
     };
