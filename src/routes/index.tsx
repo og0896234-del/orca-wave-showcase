@@ -320,7 +320,7 @@ function Index() {
               <Tilt className="h-full">
                 <div className={`relative h-full overflow-hidden rounded-3xl border p-8 transition-shadow duration-500 hover:shadow-glow ${p.hot ? "border-primary bg-primary/10" : "border-border bg-card/40"}`}>
                   {p.hot && <span className="absolute right-6 top-6 rounded-full bg-primary px-3 py-1 text-[10px] uppercase tracking-widest text-primary-foreground">Popular</span>}
-                  <Fin className="mb-8 text-primary" style-size="" className2="" {...{ className: `text-primary mb-8 ${["h-8 w-8", "h-12 w-12", "h-16 w-16"][i]}` }} />
+                  <Fin className={`mb-8 text-primary ${["h-8 w-8", "h-12 w-12", "h-16 w-16"][i]}`} />
                   <h3 className="font-display text-3xl font-bold">{p.name}</h3>
                   <p className="mt-1 text-sm text-muted-foreground">{p.tag}</p>
                   <p className="mt-8 font-display text-5xl font-bold">${p.price}<span className="text-base font-normal text-muted-foreground">/mo</span></p>
