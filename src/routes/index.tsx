@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import { Extra } from "@/components/Extra";
 import hero from "@/assets/orca-hero.jpg";
 import breach from "@/assets/orca-breach.jpg";
 import studio from "@/assets/work/img_p3_1.jpg";
@@ -158,7 +159,7 @@ function Index() {
             <Fin className="h-6 w-6 text-primary transition-transform duration-500 group-hover:-rotate-12" /> ORCAVX
           </a>
           <div className="hidden gap-8 text-sm text-muted-foreground md:flex">
-            {["about", "craft", "exhibit", "waters", "plans"].map((s) => (
+            {["about", "craft", "reels", "exhibit", "plans", "compare", "brief"].map((s) => (
               <a key={s} href={`#${s}`} className="relative capitalize transition-colors hover:text-foreground after:absolute after:-bottom-1 after:left-0 after:h-px after:w-0 after:bg-primary after:transition-all hover:after:w-full">{s}</a>
             ))}
           </div>
@@ -339,6 +340,8 @@ function Index() {
           ))}
         </div>
       </section>
+
+      <Extra />
 
       {/* contact */}
       <section id="contact" className="relative flex min-h-[100svh] items-center justify-center overflow-hidden">
