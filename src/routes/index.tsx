@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import { OrcaCursor } from "@/components/OrcaCursor";
 import { Extra } from "@/components/Extra";
 import hero from "@/assets/orca-hero.jpg";
 import breach from "@/assets/orca-breach.jpg";
@@ -142,6 +143,7 @@ function Index() {
 
   return (
     <main className="relative overflow-x-clip bg-abyss">
+      <OrcaCursor />
       {/* depth meter */}
       <div className="fixed right-6 top-1/2 z-40 hidden -translate-y-1/2 flex-col items-center gap-3 text-[10px] uppercase tracking-[0.3em] text-muted-foreground md:flex">
         <span>Depth</span>
