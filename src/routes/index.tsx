@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import { OrcaCursor } from "@/components/OrcaCursor";
 import { Extra } from "@/components/Extra";
 import hero from "@/assets/orca-hero.jpg";
 import breach from "@/assets/orca-breach.jpg";
