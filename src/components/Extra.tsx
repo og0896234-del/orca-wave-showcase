@@ -91,7 +91,7 @@ export function Extra() {
       <section id="reels" className="relative bg-deep py-32 md:py-48">
         <div className="mx-auto max-w-7xl px-6">
           <Head n="Interlude" title="Now Playing" h={<>Press <span className="text-gradient">play</span>.</>} />
-          <div className="reveal mb-6"><YT {...videos[0]} /></div>
+          <div className="reveal mb-6"><YT id={videos[0].id} title={videos[0].title} /></div>
           <div className="grid gap-6 md:grid-cols-2">
             {videos.slice(1).map((v) => <div key={v.id} className="reveal"><YT {...v} /></div>)}
           </div>
