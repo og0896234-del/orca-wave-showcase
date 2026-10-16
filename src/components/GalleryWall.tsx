@@ -100,13 +100,13 @@ export function HelixGallery({
   }, [arrange.radius, arrange.itemsPerTurn, arrange.pitch, n, step, total]);
 
   return (
-    <div ref={wrapRef} className={className} style={{ perspective: "1600px" }}>
+    <div ref={wrapRef} className={className} style={{ perspective: "2200px" }}>
       <div className="relative h-full w-full" style={{ transformStyle: "preserve-3d" }}>
         {items.map((child, i) => (
           <div
             key={i}
             data-helix
-            className="absolute left-1/2 top-1/2 w-40 will-change-transform md:w-52"
+            className="absolute left-1/2 top-[42%] w-40 will-change-transform md:w-52"
             style={{ transformStyle: "preserve-3d", backfaceVisibility: "hidden" }}
           >
             {child}
