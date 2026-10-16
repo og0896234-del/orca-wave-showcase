@@ -143,6 +143,7 @@ function Index() {
 
   return (
     <main className="relative overflow-x-clip bg-abyss">
+      <OrcaCursor />
       {/* depth meter */}
       <div className="fixed right-6 top-1/2 z-40 hidden -translate-y-1/2 flex-col items-center gap-3 text-[10px] uppercase tracking-[0.3em] text-muted-foreground md:flex">
         <span>Depth</span>
