@@ -360,13 +360,50 @@ function Index() {
         </div>
       </section>
 
-      <footer className="border-t border-border px-6 py-10">
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 text-sm text-muted-foreground md:flex-row">
-          <span className="flex items-center gap-2 font-display font-bold text-foreground"><Fin className="h-5 w-5 text-primary animate-swim" /> ORCAVX MEDIA</span>
-          <span>© {new Date().getFullYear()} · Post-production agency</span>
-          <div className="flex gap-6">
-            <a href="https://www.instagram.com" className="hover:text-primary">Instagram</a>
-            <a href="https://www.linkedin.com" className="hover:text-primary">LinkedIn</a>
+      <footer className="relative overflow-hidden border-t border-border bg-deep px-6 pt-24">
+        <div className="mx-auto max-w-7xl">
+          <div className="grid gap-12 md:grid-cols-12">
+            <div className="md:col-span-4">
+              <span className="flex items-center gap-2 font-display text-2xl font-bold"><Fin className="h-7 w-7 text-primary animate-swim" /> ORCAVX MEDIA</span>
+              <p className="mt-4 max-w-xs text-sm text-muted-foreground">Post-production for doctors, lawyers, financial advisors and real estate agents. We hunt attention.</p>
+              <form onSubmit={(e) => { e.preventDefault(); const em = new FormData(e.currentTarget).get("email"); window.location.href = `mailto:hello@orcavx.com?subject=Newsletter&body=${encodeURIComponent(`Subscribe: ${em}`)}`; }} className="mt-8 flex max-w-sm overflow-hidden rounded-full border border-border focus-within:border-primary">
+                <input required type="email" name="email" maxLength={255} placeholder="Join the pod newsletter" className="flex-1 bg-transparent px-5 py-3 text-sm outline-none" />
+                <button className="bg-primary px-5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-accent">Join</button>
+              </form>
+            </div>
+            {[
+              ["Explore", [["About", "#about"], ["Craft", "#craft"], ["Reels", "#reels"], ["Exhibition", "#exhibit"], ["Industries", "#waters"]]],
+              ["Plans", [["Pod — $999", "#plans"], ["Apex — $1,899", "#plans"], ["Megalodon — $2,399", "#plans"], ["Compare plans", "#compare"], ["Send a brief", "#brief"]]],
+              ["Services", [["Long-form editing", "#craft"], ["Shorts & reels", "#craft"], ["Thumbnails", "#craft"], ["Color & sound", "#craft"], ["Captions", "#craft"]]],
+              ["Connect", [["hello@orcavx.com", "mailto:hello@orcavx.com"], ["Instagram", "https://www.instagram.com"], ["LinkedIn", "https://www.linkedin.com"], ["YouTube", "https://www.youtube.com"], ["X / Twitter", "https://x.com"]]],
+            ].map(([title, links]) => (
+              <div key={title as string} className="md:col-span-2">
+                <p className="mb-5 text-xs uppercase tracking-[0.3em] text-primary">{title as string}</p>
+                <ul className="space-y-3 text-sm text-muted-foreground">
+                  {(links as string[][]).map(([l, h]) => (
+                    <li key={l}><a href={h} className="group inline-flex items-center gap-2 transition-colors hover:text-foreground"><span className="h-px w-0 bg-primary transition-all duration-300 group-hover:w-3" />{l}</a></li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-20 grid gap-6 border-y border-border py-8 text-sm text-muted-foreground md:grid-cols-3">
+            <p><span className="text-foreground">Hours</span> · Mon–Sat, 9am–7pm IST</p>
+            <p><span className="text-foreground">Turnaround</span> · 24–72h, worldwide clients</p>
+            <p><span className="text-foreground">Response</span> · Replies within 24 hours</p>
+          </div>
+
+          <p className="pointer-events-none select-none py-6 text-center font-display text-[18vw] font-extrabold leading-none text-stroke opacity-30 md:text-[14rem]">ORCAVX</p>
+
+          <div className="flex flex-col items-center justify-between gap-4 border-t border-border py-8 text-xs text-muted-foreground md:flex-row">
+            <span>© {new Date().getFullYear()} OrcaVX Media · All rights reserved</span>
+            <div className="flex gap-6">
+              <a href="#brief" className="hover:text-primary">Privacy</a>
+              <a href="#brief" className="hover:text-primary">Terms</a>
+              <a href="#brief" className="hover:text-primary">Refund policy</a>
+            </div>
+            <a href="#top" className="group flex items-center gap-2 hover:text-primary">Back to surface <Fin className="h-4 w-4 transition-transform group-hover:-translate-y-1" /></a>
           </div>
         </div>
       </footer>
