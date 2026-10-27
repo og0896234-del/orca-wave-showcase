@@ -49,7 +49,7 @@ export function OrcaCursor() {
           {/* the fin */}
           <svg
             viewBox="0 0 64 64"
-            className="h-5 w-5 text-primary drop-shadow-[0_0_8px_hsl(var(--primary))]"
+            className="h-5 w-5 text-primary drop-shadow-[0_0_8px_var(--primary)]"
             fill="currentColor"
             aria-hidden
           >

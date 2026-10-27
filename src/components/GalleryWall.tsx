@@ -132,7 +132,8 @@ export function Gallery({
 
   // Fewer columns on small screens, same arrangement otherwise.
   useEffect(() => {
-    const fit = () => setCols(window.innerWidth < 768 ? Math.min(3, arrange.columns) : arrange.columns);
+    const fit = () =>
+      setCols(window.innerWidth < 768 ? Math.min(3, arrange.columns) : arrange.columns);
     fit();
     window.addEventListener("resize", fit);
     return () => window.removeEventListener("resize", fit);
