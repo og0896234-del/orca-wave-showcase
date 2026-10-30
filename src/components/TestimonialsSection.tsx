@@ -418,7 +418,7 @@ export function TestimonialsSection() {
                 height: "44.16px",
                 backgroundColor: "#FFFFFF",
                 border: "0.64px solid #1A73E8",
-                borderRadius: "12px",
+                borderRadius: "5px",
               }}
             >
               <DottedArrow direction="left" />
@@ -436,7 +436,7 @@ export function TestimonialsSection() {
                 height: "44.16px",
                 backgroundColor: "#FFFFFF",
                 border: "0.64px solid #1A73E8",
-                borderRadius: "12px",
+                borderRadius: "5px",
               }}
             >
               <DottedArrow direction="right" />
