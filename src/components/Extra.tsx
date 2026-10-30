@@ -1,10 +1,9 @@
-import { useState, useEffect, type FormEvent, type ReactNode } from "react";
-import poster1 from "@/assets/work/img_p8_1.png";
-import poster2 from "@/assets/work/img_p8_2.png";
-import poster3 from "@/assets/work/img_p8_3.png";
+import { useState, useEffect, useRef, type FormEvent, type ReactNode } from "react";
 import { TheRoute } from "./RouteSection";
 import * as SelectPrimitive from "@radix-ui/react-select";
-import { Check, ChevronDown } from "lucide-react";
+import { Check, ChevronDown, Loader2 } from "lucide-react";
+import emailjs from "@emailjs/browser";
+import { motion, AnimatePresence } from "framer-motion";
 
 function Fin({ className = "" }: { className?: string }) {
   return (
@@ -22,49 +21,64 @@ function Head({ h }: { n?: string; title?: string; h: ReactNode }) {
   );
 }
 
-// Placeholder videos — replace with OrcaVX YouTube IDs
-const videos = [
-  { id: "aqz-KE-bpKQ", title: "Long-form edit", poster: poster1 },
-  { id: "eRsGyueVLvQ", title: "Story cut", poster: poster2 },
-  { id: "R6MlUcmOul8", title: "Color & sound", poster: poster3 },
-];
+/**
+ * Converts any standard YouTube link (watch URL, youtu.be short URL, or embed URL) into an embed link.
+ * Example input:  "https://www.youtube.com/watch?v=6kYRUsXtS4s"
+ * Example output: "https://www.youtube-nocookie.com/embed/6kYRUsXtS4s"
+ */
+export function createYouTubeEmbedUrl(urlOrId: string): string {
+  if (!urlOrId) return "";
+  if (urlOrId.includes("/embed/")) {
+    return urlOrId.replace("youtube.com/embed/", "youtube-nocookie.com/embed/");
+  }
+  const match = urlOrId.match(
+    /(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/
+  );
+  const id = match ? match[1] : urlOrId;
+  return `https://www.youtube-nocookie.com/embed/${id}`;
+}
 
-function YT({ id, title, poster }: { id: string; title: string; poster: string }) {
-  const [on, setOn] = useState(false);
+// Single featured showreel video configuration
+// Example YouTube Watch Link: https://www.youtube.com/watch?v=6kYRUsXtS4s
+// Created Embed Link:        https://www.youtube-nocookie.com/embed/6kYRUsXtS4s
+export const featuredVideo = {
+  title: "OrcaVX Media — Video Editing & Post-Production Showreel",
+  youtubeUrl: "https://www.youtube.com/watch?v=6kYRUsXtS4s",
+  embedUrl: createYouTubeEmbedUrl("https://www.youtube.com/watch?v=6kYRUsXtS4s"),
+};
+
+export function VideoEmbed({
+  embedUrl,
+  title,
+}: {
+  embedUrl: string;
+  title: string;
+}) {
   return (
-    <div className="group relative aspect-video overflow-hidden rounded-2xl border border-border bg-card">
-      {on ? (
-        <iframe
-          className="h-full w-full"
-          src={`https://www.youtube-nocookie.com/embed/${id}?autoplay=1`}
-          title={title}
-          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-        />
-      ) : (
-        <button
-          onClick={() => setOn(true)}
-          className="absolute inset-0"
-          aria-label={`Play ${title}`}
-        >
-          <img
-            src={poster}
-            alt={title}
-            loading="lazy"
-            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-          />
-          <span className="absolute inset-0 bg-gradient-to-t from-abyss/90 to-transparent" />
-          <span className="absolute left-1/2 top-1/2 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-glow transition-transform duration-500 group-hover:scale-125">
-            ▶
-          </span>
-          <span className="absolute bottom-4 left-4 text-xs uppercase tracking-widest">
-            {title}
-          </span>
-        </button>
-      )}
+    <div className="group relative aspect-video w-full overflow-hidden rounded-2xl md:rounded-[28px] border-2 md:border-[3px] border-white/95 bg-transparent shadow-[0_0_50px_rgba(255,255,255,0.07),0_25px_60px_rgba(0,0,0,0.6)] [isolation:isolate] transform-gpu transition-all duration-300">
+      <iframe
+        className="h-full w-full border-0 scale-[1.015] md:scale-[1.02] transform-gpu origin-center"
+        src={embedUrl}
+        title={title}
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowFullScreen
+        loading="lazy"
+      />
     </div>
   );
 }
+
+// Backward-compatible alias
+export const YT = VideoEmbed;
+
+// Backward-compatible array with single video
+export const videos = [
+  {
+    id: "6kYRUsXtS4s",
+    title: featuredVideo.title,
+    embedUrl: featuredVideo.embedUrl,
+  },
+];
 
 const rows: [string, string, string, string][] = [
   ["Long-form videos / mo", "2", "4", "8"],
@@ -118,17 +132,11 @@ export function PressPlay() {
           A quick showreel so people see proof within the first scroll. Raw footage transformed into
           scroll-stopping stories.
         </p>
-        <div className="reveal mb-6">
-          {videos.slice(0, 1).map((v) => (
-            <YT key={v.id} {...v} />
-          ))}
-        </div>
-        <div className="grid gap-6 md:grid-cols-2">
-          {videos.slice(1).map((v) => (
-            <div key={v.id} className="reveal">
-              <YT {...v} />
-            </div>
-          ))}
+        <div className="reveal">
+          <VideoEmbed
+            embedUrl={featuredVideo.embedUrl}
+            title={featuredVideo.title}
+          />
         </div>
       </div>
     </section>
@@ -216,26 +224,43 @@ export function FaqSection() {
       </p>
       <div className="divide-y divide-border border-y border-border">
         {faqs.map(([q, a], i) => (
-          <div key={q} className="reveal">
+          <div
+            key={q}
+            className="reveal group"
+            onMouseEnter={() => setOpen(i)}
+          >
             <button
               onClick={() => setOpen(open === i ? null : i)}
-              className="flex w-full items-center justify-between py-6 text-left font-display text-xl transition-colors hover:text-primary"
+              onFocus={() => setOpen(i)}
+              aria-expanded={open === i}
+              className={`flex w-full items-center justify-between py-6 text-left font-display text-xl transition-colors duration-200 ${
+                open === i ? "text-primary" : "text-foreground group-hover:text-primary"
+              }`}
             >
-              {q}
+              <span>{q}</span>
               <span
-                className={`text-primary transition-transform duration-300 ${
-                  open === i ? "rotate-45" : ""
+                className={`text-primary text-2xl font-light leading-none transition-transform duration-300 ease-out select-none ${
+                  open === i ? "rotate-45" : "rotate-0"
                 }`}
+                aria-hidden
               >
                 +
               </span>
             </button>
             <div
-              className={`grid transition-all duration-500 ${
-                open === i ? "grid-rows-[1fr] pb-6" : "grid-rows-[0fr]"
+              className={`grid transition-[grid-template-rows] duration-300 ease-out ${
+                open === i ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
               }`}
             >
-              <p className="overflow-hidden text-muted-foreground">{a}</p>
+              <div className="min-h-0 overflow-hidden">
+                <p
+                  className={`pt-1 pb-6 text-base leading-relaxed text-muted-foreground transition-all duration-300 ease-out ${
+                    open === i ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2"
+                  }`}
+                >
+                  {a}
+                </p>
+              </div>
             </div>
           </div>
         ))}
@@ -286,6 +311,7 @@ interface CustomSelectProps {
   onValueChange: (val: string) => void;
   options: { value: string; label: string }[];
   placeholder?: string;
+  highlight?: boolean;
 }
 
 function CustomSelect({
@@ -294,6 +320,7 @@ function CustomSelect({
   onValueChange,
   options,
   placeholder = "Select an option...",
+  highlight = false,
 }: CustomSelectProps) {
   const selectedLabel = options.find((o) => o.value === value)?.label || value || placeholder;
 
@@ -301,7 +328,11 @@ function CustomSelect({
     <SelectPrimitive.Root value={value} onValueChange={onValueChange}>
       <SelectPrimitive.Trigger
         id={id}
-        className="group flex h-[48px] w-full items-center justify-between rounded-xl border border-white/10 bg-black/40 px-4 py-3.5 text-sm text-foreground outline-none transition-all duration-300 hover:border-sky-400/50 hover:bg-black/50 focus:border-sky-400 focus:bg-black/60 focus:ring-2 focus:ring-sky-400/20 data-[state=open]:border-sky-400 data-[state=open]:ring-2 data-[state=open]:ring-sky-400/20 cursor-pointer text-left"
+        className={`group flex h-[48px] w-full items-center justify-between rounded-xl border bg-black/40 px-4 py-3.5 text-sm text-foreground outline-none transition-all duration-300 hover:border-sky-400/50 hover:bg-black/50 focus:border-sky-400 focus:bg-black/60 focus:ring-2 focus:ring-sky-400/20 data-[state=open]:border-sky-400 data-[state=open]:ring-2 data-[state=open]:ring-sky-400/20 cursor-pointer text-left ${
+          highlight
+            ? "border-sky-400 ring-2 ring-sky-400/40 shadow-[0_0_24px_rgba(56,189,248,0.35)]"
+            : "border-white/10"
+        }`}
         aria-label={placeholder}
       >
         <span className="truncate pr-2 font-normal text-foreground">
@@ -346,7 +377,10 @@ function CustomSelect({
 }
 
 export function BriefSection() {
-  const [sent, setSent] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
+  const notificationTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -357,20 +391,57 @@ export function BriefSection() {
     message: "",
   });
 
+  const [highlightPackage, setHighlightPackage] = useState(false);
+
   useEffect(() => {
-    const checkHash = () => {
-      const hash = window.location.hash.toLowerCase();
-      if (hash.includes("megalodon")) {
-        setFormData((prev) => ({ ...prev, package: "Megalodon Pod ($2,399/mo)" }));
-      } else if (hash.includes("apex")) {
-        setFormData((prev) => ({ ...prev, package: "Apex Pod ($1,899/mo)" }));
-      } else if (hash.includes("pod")) {
-        setFormData((prev) => ({ ...prev, package: "The Pod ($999/mo)" }));
+    return () => {
+      if (notificationTimerRef.current) {
+        clearTimeout(notificationTimerRef.current);
       }
     };
+  }, []);
+
+  useEffect(() => {
+    const applyPlanFromIdentifier = (identifier: string) => {
+      if (!identifier) return;
+      const lower = identifier.toLowerCase();
+      let matchedPackage = "";
+      if (lower.includes("megalodon")) {
+        matchedPackage = "Megalodon Plan ($2,399/mo)";
+      } else if (lower.includes("apex")) {
+        matchedPackage = "Apex Plan ($1,899/mo)";
+      } else if (lower.includes("pod")) {
+        matchedPackage = "Pod Plan ($999/mo)";
+      }
+
+      if (matchedPackage) {
+        setFormData((prev) => ({ ...prev, package: matchedPackage }));
+        setHighlightPackage(true);
+        setTimeout(() => setHighlightPackage(false), 2400);
+      }
+    };
+
+    const checkHash = () => {
+      if (window.location.hash) {
+        applyPlanFromIdentifier(window.location.hash);
+      }
+    };
+
+    const handleCustomPlanSelect = (e: Event) => {
+      const customEvt = e as CustomEvent<{ plan?: string }>;
+      if (customEvt.detail?.plan) {
+        applyPlanFromIdentifier(customEvt.detail.plan);
+      }
+    };
+
     checkHash();
     window.addEventListener("hashchange", checkHash);
-    return () => window.removeEventListener("hashchange", checkHash);
+    window.addEventListener("orcavx:select-plan", handleCustomPlanSelect);
+
+    return () => {
+      window.removeEventListener("hashchange", checkHash);
+      window.removeEventListener("orcavx:select-plan", handleCustomPlanSelect);
+    };
   }, []);
 
   const handleChange = (
@@ -380,29 +451,73 @@ export function BriefSection() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const submit = (e: FormEvent<HTMLFormElement>) => {
+  const submit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const body = `Name: ${formData.name}
-Email: ${formData.email}
-Services: ${formData.services}
-Video Style: ${formData.videoStyle}
-Industry: ${formData.industry}
-Package Selection: ${formData.package}
+    setIsSubmitting(true);
 
-Message / Project Details:
-${formData.message}`;
+    const templateParams = {
+      to_email: "hey@orcavx.com",
+      recipient_email: "hey@orcavx.com",
+      name: formData.name,
+      from_name: formData.name,
+      user_name: formData.name,
+      email: formData.email,
+      from_email: formData.email,
+      user_email: formData.email,
+      reply_to: formData.email,
+      services: formData.services,
+      video_style: formData.videoStyle,
+      industry: formData.industry,
+      package: formData.package,
+      message: formData.message,
+      project_summary: `Name: ${formData.name}\nEmail: ${formData.email}\nServices: ${formData.services}\nVideo Style: ${formData.videoStyle}\nIndustry: ${formData.industry}\nPackage: ${formData.package}\nMessage: ${formData.message}`,
+    };
 
-    window.location.href = `mailto:hey@orcavx.com?subject=${encodeURIComponent(
-      `Project Brief: ${formData.name || "New Client"}`,
-    )}&body=${encodeURIComponent(body)}`;
-    setSent(true);
+    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID || "service_orcavx";
+    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || "template_orcavx";
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+    try {
+      if (publicKey) {
+        await emailjs.send(serviceId, templateId, templateParams, publicKey);
+      } else {
+        console.info(
+          "EmailJS: To enable live email dispatch to hey@orcavx.com without a backend, set VITE_EMAILJS_SERVICE_ID, VITE_EMAILJS_TEMPLATE_ID, and VITE_EMAILJS_PUBLIC_KEY in your .env file.",
+          templateParams,
+        );
+      }
+    } catch (error) {
+      console.warn("EmailJS sending encountered an issue:", error);
+    } finally {
+      setIsSubmitting(false);
+
+      // Trigger floating bottom notification that automatically disappears in 4.5 seconds
+      if (notificationTimerRef.current) {
+        clearTimeout(notificationTimerRef.current);
+      }
+      setShowNotification(true);
+      notificationTimerRef.current = setTimeout(() => {
+        setShowNotification(false);
+      }, 4500);
+
+      // Reset form fields
+      setFormData({
+        name: "",
+        email: "",
+        services: "All Services (Long Form, Shorts, Thumbnails)",
+        videoStyle: "All / Dynamic Multi-cam",
+        industry: "Select industry...",
+        package: "Select package / plan...",
+        message: "",
+      });
+    }
   };
 
   const inputStyle =
     "w-full rounded-xl border border-white/10 bg-black/40 px-4 py-3.5 text-sm text-foreground placeholder:text-muted-foreground/60 outline-none transition-all duration-300 focus:border-primary focus:bg-black/60 focus:ring-1 focus:ring-primary/40";
 
   return (
-    <section id="brief" className="relative bg-deep pt-10 pb-16 md:pt-14 md:pb-20 overflow-hidden">
+    <section id="brief" className="relative bg-deep pt-10 pb-16 md:pt-14 md:pb-20 overflow-hidden scroll-mt-20">
       <div className="relative mx-auto max-w-7xl px-6">
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-16 items-start">
           {/* Left Column: Heading & Direct Contacts */}
@@ -544,6 +659,7 @@ ${formData.message}`;
                       value={formData.package}
                       onValueChange={(val) => setFormData((prev) => ({ ...prev, package: val }))}
                       options={packageOptions}
+                      highlight={highlightPackage}
                     />
                   </div>
                 </div>
@@ -570,39 +686,59 @@ ${formData.message}`;
                 <div className="pt-2">
                   <button
                     type="submit"
-                    className="group inline-flex items-center gap-3.5 rounded-full bg-foreground px-6 py-3.5 font-display text-sm font-semibold text-background shadow-xl transition-all duration-300 hover:bg-primary hover:text-primary-foreground hover:shadow-[0_0_30px_rgba(0,127,255,0.45)] active:scale-95"
+                    disabled={isSubmitting}
+                    className="group inline-flex items-center gap-3.5 rounded-[5px] bg-foreground px-6 py-3.5 font-display text-sm font-semibold text-background shadow-xl transition-all duration-300 hover:bg-primary hover:text-primary-foreground hover:shadow-[0_0_30px_rgba(0,127,255,0.45)] active:scale-95 disabled:opacity-80"
                   >
-                    <span className="flex h-7 w-7 items-center justify-center rounded-full bg-background text-foreground transition-all duration-300 group-hover:bg-primary-foreground group-hover:text-primary group-hover:translate-x-0.5">
-                      <svg
-                        className="h-3.5 w-3.5"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path d="M5 12h14" />
-                        <path d="m12 5 7 7-7 7" />
-                      </svg>
+                    <span className="flex h-7 w-7 items-center justify-center rounded-[5px] bg-background text-foreground transition-all duration-300 group-hover:bg-primary-foreground group-hover:text-primary group-hover:translate-x-0.5">
+                      {isSubmitting ? (
+                        <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                      ) : (
+                        <svg
+                          className="h-3.5 w-3.5"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M5 12h14" />
+                          <path d="m12 5 7 7-7 7" />
+                        </svg>
+                      )}
                     </span>
-                    <span>{sent ? "Opening your email client…" : "Get a Solution"}</span>
+                    <span>{isSubmitting ? "Sending…" : "Get a Solution"}</span>
                   </button>
-                  {sent && (
-                    <div className="mt-4 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-3.5 text-xs text-emerald-300">
-                      Opening your email client with your project details... If it doesn't open automatically, you can also send directly to{" "}
-                      <a href="mailto:hey@orcavx.com" className="font-semibold underline text-white">
-                        hey@orcavx.com
-                      </a>
-                      .
-                    </div>
-                  )}
                 </div>
               </form>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Floating Bottom Toast Notification */}
+      <AnimatePresence>
+        {showNotification && (
+          <motion.aside
+            role="status"
+            aria-live="polite"
+            initial={{ opacity: 0, y: 24, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 16, scale: 0.95 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            className="fixed bottom-7 left-1/2 z-[9999] -translate-x-1/2 pointer-events-none"
+          >
+            <div className="flex items-center gap-2.5 rounded-full border border-white/15 bg-neutral-950/95 px-5 py-2.5 shadow-[0_10px_35px_rgba(0,0,0,0.7)] backdrop-blur-md">
+              <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-400">
+                <Check className="h-3 w-3 stroke-[2.5]" />
+              </span>
+              <span className="text-sm font-medium text-white tracking-wide">
+                Sent successfully
+              </span>
+            </div>
+          </motion.aside>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

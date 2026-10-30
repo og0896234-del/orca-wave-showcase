@@ -1,9 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import { Linkedin, Instagram, Clock, Calendar } from "lucide-react";
 import { OrcaCursor } from "@/components/OrcaCursor";
 import { PressPlay, TheRoute, ComparisonTable, FaqSection, BriefSection } from "@/components/Extra";
 import { Gallery, HelixGallery, grid, helix } from "@/components/GalleryWall";
-import { GalleryHelix } from "@/components/GalleryHelix";
+import { ShortsArcCarousel } from "@/components/ShortsArcCarousel";
 import SixWaysSection from "@/components/SixWaysSection";
 import { TestimonialsSection } from "@/components/TestimonialsSection";
 import { InteractiveFooterBrand } from "@/components/InteractiveFooterBrand";
@@ -215,21 +216,29 @@ const waters = [
     name: "Healthcare",
     line: "Empathy meets authority.",
     tags: ["Provider intros", "Explainers", "FAQ reels"],
+    description:
+      "Doctors, surgeons, therapists, and clinics come to us with raw talking-head footage, CME presentations, and patient Q&A recordings. We transform them into polished long-form videos — complete with motion graphics, animated diagrams, and professional colour grading — plus short-form FAQ reels and educational explainers that build trust, grow patient audiences, and establish undeniable authority in highly regulated spaces.",
   },
   {
     name: "Legal",
     line: "Clarity without jargon.",
     tags: ["Process explainers", "Thought leadership", "Q&A shorts"],
+    description:
+      "Law firms and solo attorneys hand us raw interview recordings, deposition walk-throughs, and seminar footage. We cut it into crisp process explainers that demystify legal procedure, thought-leadership pieces that position partners as go-to authorities, and short Q&A reels designed for LinkedIn and YouTube — all without sacrificing the gravitas the legal world demands.",
   },
   {
     name: "Finance",
     line: "Stability, visualised.",
     tags: ["Market updates", "Webinar cutdowns", "Literacy series"],
+    description:
+      "Wealth advisors, fintech founders, and trading educators send us webinar recordings, screen-capture sessions, and on-camera commentary. We turn them into polished market-update videos with animated data overlays, tightly edited webinar cutdowns for gated lead magnets, and serialised financial-literacy content that converts viewers into long-term clients.",
   },
   {
     name: "Real Estate",
     line: "Sell the lifestyle.",
     tags: ["Listing tours", "Neighbourhood guides", "Market reports"],
+    description:
+      "Top-producing agents and luxury brokerages drop drone footage, walk-through videos, and neighbourhood b-roll into our shared folder. We craft cinematic listing tours with music, colour grading, and motion titles; neighbourhood lifestyle guides that sell the community as much as the property; and punchy market-report shorts that keep an agent's audience engaged between listings.",
   },
 ];
 
@@ -264,6 +273,50 @@ const plans = [
   },
 ];
 
+/* ---------- WaterRow: hover-expandable industry card ---------- */
+function WaterRow({
+  w,
+}: {
+  w: { name: string; line: string; tags: string[]; description: string };
+}) {
+  const [hovered, setHovered] = useState(false);
+
+  return (
+    <div
+      className="group cursor-default py-10 transition-all duration-500 hover:pl-6"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      {/* Top row: icon + name + tagline / tags */}
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div className="flex items-center gap-6">
+          <Fin className="h-8 w-8 -translate-x-4 text-primary opacity-0 transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100" />
+          <h3 className="font-display text-4xl font-bold transition-colors group-hover:text-primary md:text-6xl">
+            {w.name}
+          </h3>
+        </div>
+        <div className="md:pr-20 md:text-right">
+          <p className="text-lg">{w.line}</p>
+          <p className="mt-1 text-sm text-muted-foreground">{w.tags.join(" · ")}</p>
+        </div>
+      </div>
+
+      {/* Dropdown description */}
+      <div
+        className={`grid transition-[grid-template-rows,opacity] duration-400 ease-out ${
+          hovered ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+        }`}
+      >
+        <div className="min-h-0 overflow-hidden">
+          <p className="mt-4 max-w-3xl border-l-2 border-primary/40 pl-5 text-base leading-relaxed text-muted-foreground text-justify">
+            {w.description}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ---------- page ---------- */
 function Index() {
   useReveal();
@@ -295,6 +348,34 @@ function Index() {
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleSelectPlan = (planName: string) => {
+    const planKey = planName.toLowerCase();
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(
+        new CustomEvent("orcavx:select-plan", { detail: { plan: planName } }),
+      );
+      window.history.pushState(null, "", `#brief-${planKey}`);
+
+      const briefEl = document.getElementById("brief");
+      if (briefEl) {
+        const headerOffset = 80;
+        const elementPosition = briefEl.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth",
+        });
+      }
+
+      setTimeout(() => {
+        const nameInput = document.getElementById("form-name");
+        if (nameInput) {
+          nameInput.focus({ preventScroll: true });
+        }
+      }, 500);
+    }
+  };
 
   const navItems = [
     { label: "Six Ways", href: "#six-ways", id: "six-ways", subtitle: "Hunting Styles" },
@@ -335,8 +416,8 @@ function Index() {
       {/* nav */}
       <header
         className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${y > 40
-            ? "bg-background/80 backdrop-blur-xl border-b border-border/60 shadow-[0_4px_30px_rgba(0,0,0,0.3)]"
-            : "bg-transparent"
+          ? "bg-background/80 backdrop-blur-xl border-b border-border/60 shadow-[0_4px_30px_rgba(0,0,0,0.3)]"
+          : "bg-transparent"
           }`}
       >
         <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 md:py-5">
@@ -351,8 +432,8 @@ function Index() {
               alt="OrcaVX official logo"
               className="h-7 w-7 rounded-md object-contain transition-transform duration-500 group-hover:scale-110 shadow-sm"
             />
-            <span>
-              ORCA<span className="text-primary">VX</span>
+            <span className="tracking-[0.02em]">
+              ORCA<span className="text-primary ml-[0.03em]"><span className="tracking-[0.05em]">V</span><span>X</span></span>
             </span>
           </a>
 
@@ -365,8 +446,8 @@ function Index() {
                   key={item.href}
                   href={item.href}
                   className={`group relative rounded-full px-4 py-1.5 text-xs font-medium tracking-wide transition-all duration-300 md:text-sm ${isActive
-                      ? "bg-primary/15 text-primary shadow-[0_0_15px_rgba(0,127,255,0.25)]"
-                      : "text-muted-foreground hover:bg-white/[0.04] hover:text-foreground"
+                    ? "bg-primary/15 text-primary shadow-[0_0_15px_rgba(0,127,255,0.25)]"
+                    : "text-muted-foreground hover:bg-white/[0.04] hover:text-foreground"
                     }`}
                 >
                   <span className="relative z-10 flex items-center gap-1.5">
@@ -385,7 +466,7 @@ function Index() {
             <a
               href="#brief"
               onClick={() => setMobileMenuOpen(false)}
-              className="rounded-full bg-primary px-5 py-2 text-xs font-semibold text-primary-foreground shadow-glow transition-all hover:scale-105 hover:bg-primary/90 md:text-sm"
+              className="rounded-[5px] bg-primary px-5 py-2 text-xs font-semibold text-primary-foreground shadow-glow transition-all hover:scale-105 hover:bg-primary/90 md:text-sm"
             >
               Send brief
             </a>
@@ -396,7 +477,7 @@ function Index() {
               onClick={() => setMobileMenuOpen((prev) => !prev)}
               aria-label="Toggle navigation menu"
               aria-expanded={mobileMenuOpen}
-              className="flex h-9 w-9 items-center justify-center rounded-lg border border-border/80 bg-background/50 text-foreground transition-colors hover:border-primary md:hidden"
+              className="flex h-9 w-9 items-center justify-center rounded-[5px] border border-border/80 bg-background/50 text-foreground transition-colors hover:border-primary md:hidden"
             >
               <svg
                 className="h-5 w-5"
@@ -434,8 +515,8 @@ function Index() {
                     href={item.href}
                     onClick={() => setMobileMenuOpen(false)}
                     className={`flex items-center justify-between rounded-xl px-4 py-3 text-sm transition-all duration-200 ${isActive
-                        ? "bg-primary/15 font-semibold text-primary"
-                        : "text-foreground hover:bg-white/[0.05]"
+                      ? "bg-primary/15 font-semibold text-primary"
+                      : "text-foreground hover:bg-white/[0.05]"
                       }`}
                   >
                     <div className="flex items-center gap-3">
@@ -473,8 +554,12 @@ function Index() {
             opacity: Math.max(0, 1 - y / 600),
           }}
         >
-          <h1 className="font-display text-[18vw] font-extrabold leading-[0.85] md:text-[12rem]">
-            ORCA<span className="text-stroke-gilroy">VX</span>
+          <h1 className="font-display text-[18vw] font-extrabold leading-[0.85] tracking-[0.02em] md:text-[12rem]">
+            <span>ORCA</span>
+            <span className="text-stroke-gilroy ml-[0.04em]">
+              <span className="tracking-[0.06em]">V</span>
+              <span>X</span>
+            </span>
           </h1>
           <p className="mx-auto mt-8 max-w-md text-lg text-muted-foreground">
             We hunt attention. Raw footage in — scroll-stopping stories out.
@@ -482,14 +567,14 @@ function Index() {
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
             <a
               href="#brief"
-              className="group inline-flex items-center gap-3 rounded-full bg-primary px-8 py-4 font-display text-base font-semibold text-primary-foreground shadow-glow transition-all hover:scale-105 hover:bg-primary/90"
+              className="group inline-flex items-center gap-3 rounded-[5px] bg-primary px-8 py-4 font-display text-base font-semibold text-primary-foreground shadow-glow transition-all hover:scale-105 hover:bg-primary/90"
             >
               Start your project
               <Fin className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
             </a>
             <a
               href="#reels"
-              className="group inline-flex items-center gap-3 rounded-full border border-border/80 bg-card/90 px-8 py-4 font-display text-base font-semibold transition-all hover:scale-105 hover:border-primary hover:text-foreground"
+              className="group inline-flex items-center gap-3 rounded-[5px] border border-border/80 bg-card/90 px-8 py-4 font-display text-base font-semibold transition-all hover:scale-105 hover:border-primary hover:text-foreground"
             >
               <span>Watch showreel</span>
               <span className="text-xs transition-transform duration-300 group-hover:translate-x-0.5">▶</span>
@@ -583,7 +668,15 @@ function Index() {
 
         {/* Hall II — Shorts */}
         <div className="mx-auto mt-20 md:mt-24 max-w-7xl px-6">
-          <GalleryHelix />
+          <div>
+            <h2 className="font-display text-5xl font-bold md:text-7xl">
+              Hall II — <span className="text-stroke-gilroy">Shorts</span>
+            </h2>
+          </div>
+        </div>
+
+        <div className="mt-10 overflow-hidden">
+          <ShortsArcCarousel />
         </div>
 
         {/* Hall III — Thumbnails */}
@@ -624,18 +717,7 @@ function Index() {
           <div className="divide-y divide-border border-y border-border">
             {waters.map((w, i) => (
               <Reveal key={w.name} delay={i * 80}>
-                <div className="group flex flex-col gap-4 py-10 transition-all duration-500 hover:pl-6 md:flex-row md:items-center md:justify-between">
-                  <div className="flex items-center gap-6">
-                    <Fin className="h-8 w-8 -translate-x-4 text-primary opacity-0 transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100" />
-                    <h3 className="font-display text-4xl font-bold transition-colors group-hover:text-primary md:text-6xl">
-                      {w.name}
-                    </h3>
-                  </div>
-                  <div className="md:pr-20 md:text-right">
-                    <p className="text-lg">{w.line}</p>
-                    <p className="mt-1 text-sm text-muted-foreground">{w.tags.join(" · ")}</p>
-                  </div>
-                </div>
+                <WaterRow w={w} />
               </Reveal>
             ))}
           </div>
@@ -660,7 +742,8 @@ function Index() {
             <Reveal key={p.name} delay={i * 120}>
               <Tilt className="h-full">
                 <div
-                  className={`relative h-full overflow-hidden rounded-3xl border p-8 transition-shadow duration-500 hover:shadow-glow ${p.hot ? "border-primary bg-primary/10" : "border-border bg-card/40"
+                  onClick={() => handleSelectPlan(p.name)}
+                  className={`group relative h-full overflow-hidden rounded-3xl border p-8 transition-shadow duration-500 hover:shadow-glow cursor-pointer ${p.hot ? "border-primary bg-primary/10" : "border-border bg-card/40"
                     }`}
                 >
                   {p.hot && (
@@ -697,8 +780,13 @@ function Index() {
                     ))}
                   </ul>
                   <a
-                    href={i === 0 ? "#brief-pod" : i === 1 ? "#brief-apex" : "#brief-megalodon"}
-                    className={`mt-8 block rounded-full py-3 text-center text-sm font-semibold transition-all ${p.hot
+                    href="#brief"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      e.preventDefault();
+                      handleSelectPlan(p.name);
+                    }}
+                    className={`mt-8 block rounded-[5px] py-3 text-center text-sm font-semibold transition-all ${p.hot
                       ? "bg-primary text-primary-foreground shadow-glow hover:bg-primary/90 hover:scale-[1.02]"
                       : "border border-border hover:border-primary hover:bg-primary hover:text-primary-foreground"
                       }`}
@@ -744,15 +832,6 @@ function Index() {
               <span className="text-gradient">a splash.</span>
             </h2>
           </Reveal>
-          <Reveal delay={250}>
-            <a
-              href="mailto:hello@orcavx.com"
-              className="group mt-8 inline-flex items-center gap-4 rounded-full bg-primary px-10 py-5 font-display text-lg font-semibold text-primary-foreground shadow-glow transition-all hover:scale-105 hover:bg-primary/90"
-            >
-              hello@orcavx.com
-              <Fin className="h-5 w-5 transition-transform duration-500 group-hover:rotate-45" />
-            </a>
-          </Reveal>
         </div>
       </section>
 
@@ -760,7 +839,8 @@ function Index() {
       <footer className="relative overflow-hidden border-t border-border bg-deep px-6 pt-16 pb-12 md:pt-20">
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-12 md:grid-cols-12">
-            <div className="md:col-span-4 flex flex-col justify-between">
+            {/* Left Column: Brand, Description, Socials, Turnaround */}
+            <div className="lg:col-span-4 flex flex-col justify-between">
               <div>
                 <span className="flex items-center gap-3 font-display text-2xl font-bold tracking-tight text-white">
                   <img
@@ -768,118 +848,110 @@ function Index() {
                     alt="OrcaVX official logo"
                     className="h-8 w-8 rounded-lg object-contain shadow-[0_0_15px_rgba(0,127,255,0.35)]"
                   />
-                  ORCAVX MEDIA
+                  OrcaVX Media
                 </span>
-                <p className="mt-5 max-w-sm text-[15px] font-normal leading-relaxed text-slate-300">
-                  Post-production for doctors, lawyers, financial advisors and real estate agents. We
-                  hunt attention.
+                <p className="mt-4 max-w-sm text-sm leading-relaxed text-slate-400">
+                  Post-production that hunts attention for doctors, lawyers, financial advisors, and creators.
                 </p>
-              </div>
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  const em = new FormData(e.currentTarget).get("email");
-                  window.location.href = `mailto:hello@orcavx.com?subject=Newsletter&body=${encodeURIComponent(
-                    `Subscribe: ${em}`,
-                  )}`;
-                }}
-                className="mt-8 flex max-w-sm items-center rounded-full border border-white/12 bg-white/[0.03] p-1.5 transition-all duration-300 focus-within:border-primary focus-within:bg-white/[0.06] focus-within:shadow-[0_0_24px_rgba(0,127,255,0.2)]"
-              >
-                <input
-                  required
-                  type="email"
-                  name="email"
-                  maxLength={255}
-                  placeholder="Join the pod newsletter"
-                  className="flex-1 bg-transparent px-4 py-2 text-[15px] font-medium text-white placeholder:text-slate-400 outline-none"
-                />
-                <button className="rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground shadow-glow transition-all duration-300 hover:scale-105 hover:bg-primary/90">
-                  Join
-                </button>
-              </form>
-            </div>
-            {[
-              [
-                "Explore",
-                [
-                  ["About", "#about"],
-                  ["Showreel", "#reels"],
-                  ["Services", "#craft"],
-                  ["Portfolio", "#exhibit"],
-                  ["Industries", "#waters"],
-                ],
-              ],
-              [
-                "Process & Plans",
-                [
-                  ["The Route", "#route"],
-                  ["Pod — $999", "#plans"],
-                  ["Apex — $1,899", "#plans"],
-                  ["Megalodon — $2,399", "#plans"],
-                  ["Compare plans", "#compare"],
-                ],
-              ],
-              [
-                "Actions",
-                [
-                  ["Send a brief", "#brief"],
-                  ["Contact", "#contact"],
-                  ["FAQ", "#faq"],
-                ],
-              ],
-              [
-                "Connect",
-                [
-                  ["hello@orcavx.com", "mailto:hello@orcavx.com"],
-                  ["Instagram", "https://www.instagram.com"],
-                  ["LinkedIn", "https://www.linkedin.com"],
-                  ["YouTube", "https://www.youtube.com"],
-                  ["X / Twitter", "https://x.com"],
-                ],
-              ],
-            ].map(([title, links]) => (
-              <div key={title as string} className="md:col-span-2">
-                <p className="mb-5 text-xs font-bold uppercase tracking-[0.2em] text-[#00C2FF]">
-                  {title as string}
-                </p>
-                <ul className="space-y-3.5 text-[15px] font-medium">
-                  {(links as string[][]).map(([l, h]) => (
-                    <li key={l}>
-                      <a
-                        href={h}
-                        className="group inline-flex items-center gap-2 text-slate-300 transition-colors duration-200 hover:text-white"
-                      >
-                        <span className="h-0.5 w-0 rounded-full bg-primary transition-all duration-300 group-hover:w-3" />
-                        {l}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
 
-          <div className="mt-20 grid gap-8 pt-8 pb-4 md:grid-cols-3">
-            <div className="flex items-center gap-3.5">
-              <div className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.6)]" />
-              <div>
-                <p className="text-xs font-bold uppercase tracking-wider text-slate-400">Hours</p>
-                <p className="text-[15px] font-medium text-slate-100">Mon–Sat, 9am–7pm IST</p>
+                {/* Social Icon Square Buttons (Instagram & LinkedIn) */}
+                <div className="mt-6 flex items-center gap-2.5">
+                  <a
+                    href="https://www.instagram.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Instagram"
+                    className="flex h-9 w-9 items-center justify-center rounded-[5px] border border-white/12 bg-white/[0.03] text-slate-400 backdrop-blur-sm transition-all duration-200 hover:border-white/30 hover:bg-white/[0.08] hover:text-white"
+                  >
+                    <Instagram className="h-4 w-4" />
+                  </a>
+                  <a
+                    href="https://www.linkedin.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="LinkedIn"
+                    className="flex h-9 w-9 items-center justify-center rounded-[5px] border border-white/12 bg-white/[0.03] text-slate-400 backdrop-blur-sm transition-all duration-200 hover:border-white/30 hover:bg-white/[0.08] hover:text-white"
+                  >
+                    <Linkedin className="h-4 w-4" />
+                  </a>
+                </div>
+
+                {/* Availability Badges */}
+                <div className="mt-5 flex flex-wrap items-center gap-2">
+                  <div className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.02] px-3 py-1 text-xs font-medium text-slate-400">
+                    <Clock className="h-3 w-3 text-primary" />
+                    <span>24-hour turnaround</span>
+                  </div>
+                  <div className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.02] px-3 py-1 text-xs font-medium text-slate-400">
+                    <Calendar className="h-3 w-3 text-[#00C2FF]" />
+                    <span>Monday to Friday</span>
+                  </div>
+                </div>
               </div>
             </div>
-            <div className="flex items-center gap-3.5">
-              <div className="h-2 w-2 rounded-full bg-primary shadow-[0_0_10px_rgba(0,127,255,0.6)]" />
-              <div>
-                <p className="text-xs font-bold uppercase tracking-wider text-slate-400">Turnaround</p>
-                <p className="text-[15px] font-medium text-slate-100">24–72h, worldwide clients</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3.5">
-              <div className="h-2 w-2 rounded-full bg-[#00C2FF] shadow-[0_0_10px_rgba(0,194,255,0.6)]" />
-              <div>
-                <p className="text-xs font-bold uppercase tracking-wider text-slate-400">Response</p>
-                <p className="text-[15px] font-medium text-slate-100">Replies within 24 hours</p>
-              </div>
+
+            {/* Right Columns (4 Structured Columns Matching Reference Design & Website Content) */}
+            <div className="lg:col-span-8 grid grid-cols-2 gap-8 sm:grid-cols-4">
+              {[
+                {
+                  title: "The Exhibit",
+                  links: [
+                    ["Long-Form", "#exhibit"],
+                    ["Shorts", "#exhibit"],
+                    ["Thumbnails", "#exhibit"],
+                    ["Showreel", "#reels"],
+                    ["Six Ways", "#six-ways"],
+                  ],
+                },
+                {
+                  title: "Process & Plans",
+                  links: [
+                    ["The Route", "#route"],
+                    ["Pod", "#plans"],
+                    ["Apex", "#plans"],
+                    ["Megalodon", "#plans"],
+                    ["Compare plans", "#compare"],
+                  ],
+                },
+                {
+                  title: "Company",
+                  links: [
+                    ["About Us", "#about"],
+                    ["Our Waters", "#waters"],
+                    ["Send a brief", "#brief"],
+                    ["Client reviews", "#testimonials"],
+                    ["FAQ", "#faq"],
+                  ],
+                },
+                {
+                  title: "Legal",
+                  links: [
+                    ["Privacy Policy", "#brief"],
+                    ["Terms of Service", "#brief"],
+                    ["Cookie Policy", "#brief"],
+                    ["Refund Policy", "#brief"],
+                    ["Sitemap", "#top"],
+                  ],
+                },
+              ].map((col) => (
+                <div key={col.title}>
+                  <p className="mb-4 text-sm font-semibold text-white">
+                    {col.title}
+                  </p>
+                  <ul className="space-y-3 text-sm text-slate-400">
+                    {col.links.map(([label, href]) => (
+                      <li key={label}>
+                        <a
+                          href={href}
+                          className="transition-colors duration-200 hover:text-white"
+                        >
+                          {label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
             </div>
           </div>
 
