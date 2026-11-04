@@ -78,8 +78,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "OrcaVX Media" },
-      { name: "description", content: "Post-production agency for video editing and thumbnails." },
+      { title: "OrcaVX — High-Retention Video Editing & Post-Production Agency" },
+      {
+        name: "description",
+        content:
+          "Dedicated video post-production agency for creators, founders, and high-trust brands. Scroll-stopping YouTube videos, Shorts, and high-CTR thumbnails delivered in 24–48 hours.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],

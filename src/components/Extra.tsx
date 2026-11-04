@@ -103,15 +103,29 @@ const steps = [
 ];
 
 const faqs = [
-  ["How do I send footage?", "Via a shared Google Drive or Dropbox folder we set up on day one."],
-  ["Can I change plans?", "Yes — upgrade or downgrade any month."],
   [
-    "What if I'm not happy with an edit?",
-    "Every plan includes revisions; we iterate until it's right.",
+    "How fast will I receive my finished videos?",
+    "Standard turnaround is 24 to 48 hours for Shorts and 48 to 72 hours for long-form episodes. If you need priority rush delivery, 24-hour turnaround is included on the Megalodon tier.",
   ],
   [
-    "Do you write scripts or hooks?",
-    "We suggest hooks and titles with every delivery on Apex and Megalodon.",
+    "How do we hand off raw footage?",
+    "On day one, we create a private, high-speed shared Google Drive or Dropbox workspace. Simply upload your raw footage, audio tracks, and brief notes. We handle everything from there.",
+  ],
+  [
+    "What if I need revisions or adjustments?",
+    "Every plan includes dedicated review rounds. Leave time-stamped feedback directly on your preview link, and we turn around revisions within 24 hours until you're completely satisfied.",
+  ],
+  [
+    "Who owns the rights and final project files?",
+    "You maintain 100% intellectual property ownership of all exported videos, thumbnails, and assets. Full raw project files can also be provided on request on our Apex and Megalodon plans.",
+  ],
+  [
+    "Can I pause, upgrade, or cancel my subscription?",
+    "Yes. There are zero long-term lock-ins or contracts. You can upgrade, downgrade, or pause your membership anytime before your next billing cycle.",
+  ],
+  [
+    "Do you help with hooks, titles, and thumbnail ideas?",
+    "Absolutely. We don't just assemble footage; we engineer retention. We analyze your niche and suggest high-CTR title variations, viral 3-second hook angles, and thumbnail concepts with every delivery.",
   ],
 ];
 
@@ -129,8 +143,7 @@ export function PressPlay() {
           }
         />
         <p className="-mt-8 mb-12 max-w-xl text-base text-muted-foreground">
-          A quick showreel so people see proof within the first scroll. Raw footage transformed into
-          scroll-stopping stories.
+          See the caliber of work we deliver every day. Fast-paced storytelling, crisp audio mixing, and high-impact visual hooks that keep viewers glued until the final second.
         </p>
         <div className="reveal">
           <VideoEmbed
@@ -159,8 +172,7 @@ export function ComparisonTable() {
           }
         />
         <p className="-mt-10 mb-10 max-w-xl text-base text-muted-foreground">
-          Compare every tier feature-by-feature directly under the plans so nobody has to hunt for
-          details.
+          Full side-by-side comparison of deliverables, turnaround windows, and production perks across all tiers.
         </p>
         <div className="reveal overflow-x-auto rounded-3xl border border-border">
           <table className="w-full min-w-[640px] text-left text-sm">
@@ -220,7 +232,7 @@ export function FaqSection() {
         }
       />
       <p className="-mt-10 mb-10 text-center text-base text-muted-foreground">
-        Answers to the last doubts right after pricing, where decisions are made.
+        Clear answers to common questions about workflows, revisions, turnaround times, and file ownership.
       </p>
       <div className="divide-y divide-border border-y border-border">
         {faqs.map(([q, a], i) => (
@@ -523,11 +535,12 @@ export function BriefSection() {
           {/* Left Column: Heading & Direct Contacts */}
           <div className="reveal flex flex-col justify-between lg:col-span-5">
             <div>
+              <p className="mb-2 text-xs uppercase tracking-widest text-primary font-semibold">Start Your Project</p>
               <h2 className="font-display text-4xl font-bold leading-tight tracking-tight text-foreground md:text-5xl lg:text-6xl">
-                Discuss Your Video <span className="text-gradient">Post-Production</span> Needs
+                Ready to upgrade your <span className="text-gradient">video presence</span>?
               </h2>
               <p className="mt-6 text-base leading-relaxed text-muted-foreground max-w-md">
-                Are you looking for top-quality video post-production tailored to your needs? Reach out to us.
+                Tell us about your channel, business, or upcoming video project. We'll analyze your style and get back to you within 12 hours with a tailored plan.
               </p>
             </div>
 
@@ -569,6 +582,22 @@ export function BriefSection() {
                   </span>
                 </div>
               </a>
+
+              {/* Trust & Conversion Guarantees */}
+              <div className="pt-4 border-t border-white/10 space-y-2.5 text-xs text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  <span className="text-primary font-bold">✓</span>
+                  <span>Free 20-min creative consult & footage review</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-primary font-bold">✓</span>
+                  <span>Strict NDA honored for all client footage</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-primary font-bold">✓</span>
+                  <span>Average response time under 2 hours</span>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -707,7 +736,7 @@ export function BriefSection() {
                         </svg>
                       )}
                     </span>
-                    <span>{isSubmitting ? "Sending…" : "Get a Solution"}</span>
+                    <span>{isSubmitting ? "Submitting brief…" : "Submit Project Brief"}</span>
                   </button>
                 </div>
               </form>

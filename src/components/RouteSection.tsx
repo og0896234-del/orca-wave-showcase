@@ -17,7 +17,7 @@ const stepsData: [StepItem, StepItem, StepItem, StepItem] = [
   {
     num: "01",
     title: "Drop",
-    desc: "Upload raw files and a brief via your dedicated client portal.",
+    desc: "Upload raw files and brief notes directly into your private shared Drive folder.",
     rotation: 6.5,
     hoverRotation: 2,
     glowColor: "rgba(0, 127, 255, 0.25)",
@@ -26,7 +26,7 @@ const stepsData: [StepItem, StepItem, StepItem, StepItem] = [
   {
     num: "02",
     title: "Hunt",
-    desc: "An editor reviews the scope and confirms the delivery timeline.",
+    desc: "Your dedicated editor reviews the assets, plans retention hooks, and confirms delivery.",
     rotation: -12.5,
     hoverRotation: -6,
     glowColor: "rgba(0, 127, 255, 0.25)",
@@ -35,7 +35,7 @@ const stepsData: [StepItem, StepItem, StepItem, StepItem] = [
   {
     num: "03",
     title: "Craft",
-    desc: "Delivery takes 24 to 72 hours depending on style.",
+    desc: "We edit pacing, mix audio, color grade, and design custom thumbnails in 24–72 hours.",
     rotation: 12,
     hoverRotation: 6,
     glowColor: "rgba(0, 127, 255, 0.25)",
@@ -44,7 +44,7 @@ const stepsData: [StepItem, StepItem, StepItem, StepItem] = [
   {
     num: "04",
     title: "Surface",
-    desc: "Long form video, short clips, and thumbnail together.",
+    desc: "Review preview links, request quick revisions, and download ready-to-publish 4K exports.",
     rotation: -2.2,
     hoverRotation: 0,
     glowColor: "rgba(0, 127, 255, 0.25)",
@@ -329,12 +329,12 @@ export function TheRoute() {
     <section id="route" className="relative mx-auto max-w-7xl px-6 py-24 md:py-36 overflow-hidden">
       {/* Section Header */}
       <div className="mb-16 md:mb-20">
+        <p className="mb-3 text-xs uppercase tracking-widest text-primary font-semibold">Our 4-Step Process</p>
         <h2 className="font-display text-5xl font-bold md:text-7xl">
-          The <span className="text-stroke-gilroy">route</span>.
+          The <span className="text-stroke-gilroy">route</span> to publish.
         </h2>
         <p className="mt-4 max-w-xl text-base text-muted-foreground">
-          People need to know how working with you feels before they see a price. Frictionless from
-          raw clips to final export.
+          From raw clips to published videos in four predictable steps. Transparent timelines, fast turnarounds, zero friction.
         </p>
       </div>
 

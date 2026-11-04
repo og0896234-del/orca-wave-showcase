@@ -254,12 +254,13 @@ export function TestimonialsSection() {
       <div className="relative mx-auto max-w-7xl px-6 w-full">
         {/* Section Header */}
         <div className="text-center mb-6 sm:mb-8">
+          <p className="mb-2 text-xs uppercase tracking-widest text-primary font-semibold">Client Results & Proof</p>
           <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
-            Trusted by <span className="text-stroke-gilroy">100+</span> World-Class Creators
+            Trusted by <span className="text-stroke-gilroy">100+</span> Creators & Brands
           </h2>
 
           <p className="mx-auto mt-2 sm:mt-2.5 max-w-xl text-xs sm:text-sm text-muted-foreground leading-relaxed">
-            See how OrcaVX transforms raw footage into high-retention stories, viral shorts, and flawless Hollywood-grade color.
+            From surging YouTube retention to viral TikTok hooks, here's what creators and founders experience with OrcaVX.
           </p>
         </div>
 

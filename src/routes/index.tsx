@@ -35,16 +35,16 @@ export const Route = createFileRoute("/")({
       { rel: "apple-touch-icon", href: "/logo.png" },
     ],
     meta: [
-      { title: "OrcaVX Media — Post-production that hunts attention" },
+      { title: "OrcaVX — High-Retention Video Post-Production & Thumbnails" },
       {
         name: "description",
         content:
-          "Video editing and thumbnail design for doctors, lawyers, financial advisors and real estate agents.",
+          "Dedicated video editing and thumbnail design agency for YouTube creators, healthcare, legal, finance, and real estate professionals. Fast 24–48h turnarounds.",
       },
-      { property: "og:title", content: "OrcaVX Media — Post-production agency" },
+      { property: "og:title", content: "OrcaVX — High-Retention Video Post-Production & Thumbnails" },
       {
         property: "og:description",
-        content: "Scroll-stopping long-form, shorts and thumbnails. Pod, Apex and Megalodon plans.",
+        content: "Turn raw footage into high-retention YouTube videos, viral Shorts, and click-worthy thumbnails.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -378,11 +378,11 @@ function Index() {
   };
 
   const navItems = [
-    { label: "Six Ways", href: "#six-ways", id: "six-ways", subtitle: "Hunting Styles" },
-    { label: "The Route", href: "#route", id: "route", subtitle: "Sticky Notes" },
-    { label: "Our Waters", href: "#waters", id: "waters", subtitle: "Healthcare & Niches" },
-    { label: "The Exhibit", href: "#exhibit", id: "exhibit", subtitle: "Work & Reels" },
-    { label: "Pod Plans", href: "#plans", id: "plans", subtitle: "Pricing & Tiers" },
+    { label: "Services", href: "#six-ways", id: "six-ways", subtitle: "6 Core Formats" },
+    { label: "Portfolio", href: "#exhibit", id: "exhibit", subtitle: "Reels & Thumbnails" },
+    { label: "Industries", href: "#waters", id: "waters", subtitle: "Who We Serve" },
+    { label: "How It Works", href: "#route", id: "route", subtitle: "4-Step Process" },
+    { label: "Pricing", href: "#plans", id: "plans", subtitle: "Transparent Plans" },
   ];
 
   return (
@@ -468,7 +468,7 @@ function Index() {
               onClick={() => setMobileMenuOpen(false)}
               className="rounded-[5px] bg-primary px-5 py-2 text-xs font-semibold text-primary-foreground shadow-glow transition-all hover:scale-105 hover:bg-primary/90 md:text-sm"
             >
-              Send brief
+              Get Started
             </a>
 
             {/* Mobile menu hamburger toggle button */}
@@ -500,10 +500,10 @@ function Index() {
         {mobileMenuOpen && (
           <div className="border-b border-border/80 bg-abyss/95 px-6 pb-6 pt-2 backdrop-blur-2xl md:hidden animate-in fade-in slide-in-from-top-2 duration-200">
             <div className="mb-3 flex items-center justify-between border-b border-border/50 pb-2 text-[10px] uppercase tracking-widest text-muted-foreground">
-              <span>Pod Navigation</span>
+              <span>Quick Navigation</span>
               <span className="flex items-center gap-1 text-primary">
                 <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
-                Live Radar
+                Open for Projects
               </span>
             </div>
             <div className="flex flex-col gap-1">
@@ -554,6 +554,11 @@ function Index() {
             opacity: Math.max(0, 1 - y / 600),
           }}
         >
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-xs font-medium tracking-wide text-primary shadow-[0_0_20px_rgba(0,127,255,0.2)] backdrop-blur-md">
+            <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+            <span>Dedicated Video Post-Production & High-CTR Thumbnails</span>
+          </div>
+
           <h1 className="font-display text-[18vw] font-extrabold leading-[0.85] tracking-[0.02em] md:text-[12rem]">
             <span>ORCA</span>
             <span className="text-stroke-gilroy ml-[0.04em]">
@@ -561,10 +566,10 @@ function Index() {
               <span>X</span>
             </span>
           </h1>
-          <p className="mx-auto mt-8 max-w-md text-lg text-muted-foreground">
-            We hunt attention. Raw footage in — scroll-stopping stories out.
+          <p className="mx-auto mt-6 max-w-xl text-base md:text-lg text-slate-300 leading-relaxed">
+            We turn raw footage into high-retention YouTube videos, viral Shorts, and click-worthy thumbnails. Dedicated editors, 24–48h turnarounds, zero headaches.
           </p>
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+          <div className="mt-9 flex flex-wrap items-center justify-center gap-4">
             <a
               href="#brief"
               className="group inline-flex items-center gap-3 rounded-[5px] bg-primary px-8 py-4 font-display text-base font-semibold text-primary-foreground shadow-glow transition-all hover:scale-105 hover:bg-primary/90"
@@ -579,6 +584,17 @@ function Index() {
               <span>Watch showreel</span>
               <span className="text-xs transition-transform duration-300 group-hover:translate-x-0.5">▶</span>
             </a>
+          </div>
+
+          {/* CRO Trust Bar */}
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-y-2 gap-x-5 text-xs text-muted-foreground">
+            <span className="flex items-center gap-1.5 text-slate-200">
+              <span className="text-amber-400">★★★★★</span> 5.0 Rating from 50+ Creators
+            </span>
+            <span className="hidden sm:inline text-border">•</span>
+            <span>⚡ 24–48h Turnaround</span>
+            <span className="hidden sm:inline text-border">•</span>
+            <span>🔄 Unlimited Revisions Available</span>
           </div>
         </div>
         <a
@@ -608,15 +624,25 @@ function Index() {
       <section id="about" className="relative mx-auto max-w-7xl px-6 py-24 md:py-36">
         <div className="grid items-center gap-16 md:grid-cols-2">
           <Reveal>
+            <p className="mb-3 text-xs uppercase tracking-widest text-primary font-semibold">Your Video Growth Engine</p>
             <h2 className="font-display text-5xl font-bold leading-tight md:text-7xl">
-              Smart. Fast.
+              Less time editing.
               <br />
-              <span className="text-gradient">Relentless.</span>
+              <span className="text-gradient">More time growing.</span>
             </h2>
-            <p className="mt-8 max-w-md text-lg text-muted-foreground">
-              Like an orca pod, we move as one — editors, designers and colorists turning raw
-              footage into high-retention stories, so you can focus on creating.
+            <p className="mt-8 max-w-lg text-base md:text-lg text-muted-foreground leading-relaxed">
+              Tired of managing flaky freelancers, missed deadlines, or losing 20 hours a week inside Premiere Pro? OrcaVX operates as your plug-and-play post-production team — veteran editors, sound engineers, and thumbnail strategists working in sync so you never miss an upload.
             </p>
+            <div className="mt-8 grid grid-cols-2 gap-6 pt-6 border-t border-border/60">
+              <div>
+                <p className="font-display text-3xl font-bold text-foreground">35M+</p>
+                <p className="mt-1 text-xs text-muted-foreground">Organic views generated</p>
+              </div>
+              <div>
+                <p className="font-display text-3xl font-bold text-foreground">100%</p>
+                <p className="mt-1 text-xs text-muted-foreground">Satisfaction guarantee</p>
+              </div>
+            </div>
           </Reveal>
           <Reveal delay={200}>
             <Tilt className="relative">
@@ -650,9 +676,13 @@ function Index() {
         {/* Hall I — Long Form */}
         <div className="mx-auto max-w-7xl px-6">
           <Reveal>
+            <p className="mb-3 text-xs uppercase tracking-widest text-primary font-semibold">Featured Work</p>
             <h2 className="font-display text-5xl font-bold md:text-7xl">
               Hall I — <span className="text-gradient">Long form</span>
             </h2>
+            <p className="mt-3 text-base text-muted-foreground">
+              YouTube videos, podcasts, and explainers with retention-first pacing and dynamic sound design.
+            </p>
           </Reveal>
         </div>
 
@@ -670,8 +700,11 @@ function Index() {
         <div className="mx-auto mt-20 md:mt-24 max-w-7xl px-6">
           <div>
             <h2 className="font-display text-5xl font-bold md:text-7xl">
-              Hall II — <span className="text-stroke-gilroy">Shorts</span>
+              Hall II — <span className="text-stroke-gilroy">Shorts & Reels</span>
             </h2>
+            <p className="mt-3 text-base text-muted-foreground">
+              Vertical clips (9:16) with scroll-stopping 3-second hooks, kinetic text, and viral sound effects.
+            </p>
           </div>
         </div>
 
@@ -685,6 +718,9 @@ function Index() {
             <h2 className="font-display text-5xl font-bold md:text-7xl">
               Hall III — <span className="text-gradient">Thumbnails</span>
             </h2>
+            <p className="mt-3 text-base text-muted-foreground">
+              Click-tested thumbnail designs engineered with psychological contrast to maximize CTR.
+            </p>
           </Reveal>
         </div>
 
@@ -710,9 +746,13 @@ function Index() {
         />
         <div className="relative mx-auto max-w-7xl px-6">
           <Reveal>
-            <h2 className="mb-14 font-display text-5xl font-bold md:text-7xl">
-              Where we <span className="text-gradient">swim</span>.
+            <p className="mb-3 text-xs uppercase tracking-widest text-primary font-semibold">Specialized Industry Expertise</p>
+            <h2 className="mb-4 font-display text-5xl font-bold md:text-7xl">
+              Tailored for <span className="text-gradient">high-trust</span> niches.
             </h2>
+            <p className="mb-14 max-w-2xl text-base text-muted-foreground">
+              You won’t have to waste cycles explaining compliance or industry tone. We already understand the nuance, regulations, and buyer psychology of your field.
+            </p>
           </Reveal>
           <div className="divide-y divide-border border-y border-border">
             {waters.map((w, i) => (
@@ -733,9 +773,13 @@ function Index() {
       {/* 8. Pick your size: The Pod, Apex and Megalodon pricing cards */}
       <section id="plans" className="relative mx-auto max-w-7xl px-6 pt-16 pb-10 md:pt-24 md:pb-14">
         <Reveal>
-          <h2 className="mb-14 font-display text-5xl font-bold md:text-7xl">
-            Pick your <span className="text-stroke-gilroy">size</span>.
+          <p className="mb-3 text-xs uppercase tracking-widest text-primary font-semibold">Transparent Monthly Retainers</p>
+          <h2 className="mb-4 font-display text-5xl font-bold md:text-7xl">
+            Pick your <span className="text-stroke-gilroy">plan</span>.
           </h2>
+          <p className="mb-14 max-w-xl text-base text-muted-foreground">
+            Predictable flat-rate pricing with zero hidden fees. Upgrade, downgrade, or pause anytime to match your production schedule.
+          </p>
         </Reveal>
         <div className="grid gap-6 md:grid-cols-3">
           {plans.map((p, i) => (
@@ -747,8 +791,8 @@ function Index() {
                     }`}
                 >
                   {p.hot && (
-                    <span className="absolute right-6 top-6 rounded-full bg-primary px-3 py-1 text-[10px] uppercase tracking-widest text-primary-foreground">
-                      Popular
+                    <span className="absolute right-6 top-6 rounded-full bg-primary px-3 py-1 text-[10px] uppercase tracking-widest text-primary-foreground font-semibold">
+                      Most Popular
                     </span>
                   )}
                   <Fin
@@ -779,6 +823,9 @@ function Index() {
                       <li key={e}>— {e}</li>
                     ))}
                   </ul>
+                  <div className="mt-6 pt-4 border-t border-border/40 text-center text-xs text-muted-foreground">
+                    ✓ Pause or cancel anytime • No lock-in
+                  </div>
                   <a
                     href="#brief"
                     onClick={(e) => {
@@ -786,12 +833,12 @@ function Index() {
                       e.preventDefault();
                       handleSelectPlan(p.name);
                     }}
-                    className={`mt-8 block rounded-[5px] py-3 text-center text-sm font-semibold transition-all ${p.hot
+                    className={`mt-4 block rounded-[5px] py-3 text-center text-sm font-semibold transition-all ${p.hot
                       ? "bg-primary text-primary-foreground shadow-glow hover:bg-primary/90 hover:scale-[1.02]"
                       : "border border-border hover:border-primary hover:bg-primary hover:text-primary-foreground"
                       }`}
                   >
-                    Start with {p.name}
+                    Get started with {p.name}
                   </a>
                 </div>
               </Tilt>
@@ -894,22 +941,22 @@ function Index() {
             <div className="lg:col-span-8 grid grid-cols-2 gap-8 sm:grid-cols-4">
               {[
                 {
-                  title: "The Exhibit",
+                  title: "Portfolio & Work",
                   links: [
-                    ["Long-Form", "#exhibit"],
-                    ["Shorts", "#exhibit"],
+                    ["Long-Form Videos", "#exhibit"],
+                    ["Shorts & Reels", "#exhibit"],
                     ["Thumbnails", "#exhibit"],
                     ["Showreel", "#reels"],
-                    ["Six Ways", "#six-ways"],
+                    ["Services", "#six-ways"],
                   ],
                 },
                 {
                   title: "Process & Plans",
                   links: [
-                    ["The Route", "#route"],
-                    ["Pod", "#plans"],
-                    ["Apex", "#plans"],
-                    ["Megalodon", "#plans"],
+                    ["How It Works", "#route"],
+                    ["Pod Plan", "#plans"],
+                    ["Apex Plan", "#plans"],
+                    ["Megalodon Plan", "#plans"],
                     ["Compare plans", "#compare"],
                   ],
                 },
@@ -917,8 +964,8 @@ function Index() {
                   title: "Company",
                   links: [
                     ["About Us", "#about"],
-                    ["Our Waters", "#waters"],
-                    ["Send a brief", "#brief"],
+                    ["Industries", "#waters"],
+                    ["Get Started", "#brief"],
                     ["Client reviews", "#testimonials"],
                     ["FAQ", "#faq"],
                   ],
@@ -930,7 +977,7 @@ function Index() {
                     ["Terms of Service", "#brief"],
                     ["Cookie Policy", "#brief"],
                     ["Refund Policy", "#brief"],
-                    ["Sitemap", "#top"],
+                    ["Back to top", "#top"],
                   ],
                 },
               ].map((col) => (
