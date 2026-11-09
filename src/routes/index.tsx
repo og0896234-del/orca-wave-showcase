@@ -554,11 +554,6 @@ function Index() {
             opacity: Math.max(0, 1 - y / 600),
           }}
         >
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-xs font-medium tracking-wide text-primary shadow-[0_0_20px_rgba(0,127,255,0.2)] backdrop-blur-md">
-            <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
-            <span>Dedicated Video Post-Production & High-CTR Thumbnails</span>
-          </div>
-
           <h1 className="font-display text-[18vw] font-extrabold leading-[0.85] tracking-[0.02em] md:text-[12rem]">
             <span>ORCA</span>
             <span className="text-stroke-gilroy ml-[0.04em]">
